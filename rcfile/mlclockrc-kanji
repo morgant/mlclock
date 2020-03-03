@@ -1,0 +1,42 @@
+; mlclock の設定ファイル ( $HOME/.mlclockrc )
+
+; 表示フォームについては strftime を man で見て下さい。
+; プログラムがダサイので、スペースを使わないで下さい。(^_^;
+FORM1	= "(%a)%l:%M:%S%p"		; 常時表示されるフォーム
+FORM2	= "(%a)%b月%d日"		; 切替えた時のフォーム
+
+;FORM1	= "(%A)%l時%M分%S秒%p"		; （日曜日）11時22時33秒午後
+;FORM1	= "%H:%M:%S%Z"			; 23:22:33
+;FORM1	= "%T%Z"			; 23:22:33 JST
+
+;FORM2	= "%Y年%b月%d日"		; 1998年 7月12日
+
+; LOCALE が ja_JP.EUC なら
+; /usr/share/locale/ja_JP.EUC/LC_TIME （ＦｒｅｅＢＳＤの場合）
+; をいじれば解消します。
+
+
+; EVENT は CLICK と FOCUS が指定できます。
+;
+; CLICK はウィンドウをクリックすることでフォーム１とフォーム２を切替えられます。
+; ただしフォーム２は３秒たつとフォーム１に戻ります。（クリックでも戻る）
+;
+; FOCUS はポインタをウインドウに入れることでフォーム１とフォーム２を切替えられます。
+
+EVENT	= FOCUS				; フォームを切替えるイベント
+NEAR	= 10				; ウィンドウにどれだけ近付いたらフォームを変更するか(FOCUS 用)
+
+LOCALE	= "ja_JP.EUC"			; このファイルのロケール
+FONTSET	= "-*-*-medium-r-normal--12-*"	; 表示用フォントセット
+
+HEAD	= 5				; フォームの上のすきまの大きさ(mlvwm用)
+
+; 色は rgb.txt を見るか showrgb を実行するかして色の名前で指定するか、
+; #rrggbb で指定します。
+
+FONTCOLOR = "blue"			; フォントの色
+BACKCOLOR = "white"			; 背景色 
+;FONTCOLOR = "#0000ff"
+;BACKCOLOR = "white"
+
+BOLD = FALSE				; フォントを太字にするかどうか ( TRUE or FALSE )

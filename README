@@ -1,0 +1,15 @@
+          MLCLOCK is "Macintosh like clock"
+
+HOW TO COMPILE
+
+   1) xmkmf
+   2) make
+
+HOW TO USE
+
+   Copy mlclockrc file to your home directory as ".mlclockrc" or specifyed name.
+   Run mlclock.
+
+ABOUT BUGS
+
+   Send mail to hideki@hry.info.gifu-u.ac.jp

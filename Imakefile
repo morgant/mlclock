@@ -1,0 +1,21 @@
+# mlclock is macintosh like clock
+
+RCFILE = .mlclockrc
+CC = gcc
+OPTION =
+
+# If function dosen't find , add  -lsocket or whatever you need .
+# This is example .
+#ADD_LIBRARIES = -lxpg4 -lsocket -lnsl
+ADD_LIBRARIES = -lxpg4
+
+#---You shouldn't have to change anything below this line.---
+
+LOCAL_LIBRARIES = $(XLIB) $(ADD_LIBRARIES)
+
+SRCS = mlclock.c
+OBJS = $(SRCS:.c=.o)
+
+DEFINES = $(OPTION) -DRCFILE=\"${RCFILE}\"
+
+ComplexProgramTarget( mlclock )

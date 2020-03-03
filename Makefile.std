@@ -1,0 +1,11 @@
+# コンパイル
+
+a:: mlclock
+
+mlclock		:mlclock.c
+		gcc -O2 -Wall mlclock.c -o mlclock -I/usr/X11R6/include \
+			-L/usr/X11R6/lib -lX11 -lxpg4 -DRCFILE=\".mlclockrc\"
+
+clean::
+		rm -f *.o core *~ *.core "#"* mlclock
+

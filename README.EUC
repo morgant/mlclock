@@ -1,0 +1,42 @@
+         MLCLOCK は Macintosh Like Clock です。（変な文）
+
+コンパイル
+
+   1) xmkmf
+   2) make
+   で、おっけーです。（たぶん）
+
+使い方
+
+   まず mlclockrc-kanji を自分のディレクトリにコピーします。
+   （通常は .mlclockrc という名前にしてコピーします。）
+   （または、Imakefile の中で指定したファイル名にします。）
+   mlclock で、実行できます。
+
+ナイスな使い方
+
+   お手持ちの .mlvwmrc に
+   Swallow "MLClock" Action Exec "mlclock" exec mlclock
+   の一行を加えます。
+   これですべておっけー。
+
+
+EVENT について
+
+     始めのころは、mlvwm のメニューに入れても CLICK が使えたのですが、
+   最近はなんかイベントが受け取れません。
+   よって EVENT には FOCUS を使って下さいね。
+   普通に、使うぶんにはどちらも使えます。
+
+バグについて
+
+   いろいろあるかとは思いますが、何か気づいたら
+	hideki@hry.info.gifu-u.ac.jp
+   まで、メールして下さい。
+
+
+MLCLOCK のページ（予定）
+ 
+   http://www.hry.info.gifu-u.ac.jp/~hideki/index.html
+   にアクセスしてみて下さい。
+   MLCLOCKの最新版他、X window 用のゲームなどがあります。

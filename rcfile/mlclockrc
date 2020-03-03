@@ -1,0 +1,28 @@
+; mlclock setting file ( $HOME/.mlclockrc )
+
+; see strftime .
+; DON'T USE SPACE.
+
+FORM1	= "(%a)%l:%M:%S%p"		; form1
+FORM2	= "(%a)%b·î%dÆü"		; form2
+
+; samples
+;FORM1	= "%H:%M:%S"			; 23:22:33
+;FORM2	= "%Y/%b/%d"			; 1998/7/12
+
+EVENT	= FOCUS				; FOCUS or CLICK
+NEAR	= 10				; the distance of change form event
+
+LOCALE	= "C"				; locale name( Do you use it ? )
+FONTSET	= "-*-*-medium-r-normal--12-*"	; font set
+
+HEAD	= 5				; head space
+
+; specify color name or color value as "#rrggbb#.
+
+FONTCOLOR = "blue"			; font color
+BACKCOLOR = "white"			; backgorung color  
+;FONTCOLOR = "#0000ff"
+;BACKCOLOR = "white"
+
+BOLD = FALSE				; Bold font ? ( TRUE or FALSE )

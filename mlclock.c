@@ -53,14 +53,14 @@ void usage( char *name ) ;
 Display *dpy ;
 Window win ;
 XEvent eve ;
-XRectangle ink, log;
+XRectangle ink, logical;
 GC gc ;
 XFontSet fs ;
 Colormap cmap ;
 
 struct timeval wait ;
 
-void main( int argc , char **argv ){
+int main( int argc , char **argv ){
   char str[MAX_FORM] , str2[MAX_FORM] , *form = NULL ;
   int screen , sw = False , lsec = 0 , uhead , width , height , i ;
   struct tm *tmm ;
@@ -118,19 +118,19 @@ void main( int argc , char **argv ){
   tmm->tm_yday = 365;
 
   strftime(str, MAX_FORM, Form1 , tmm);
-  XmbTextExtents( fs , str , strlen(str) , &ink, &log);
-  width=log.width ;
-  uhead = log.y ;
-  height = log.height ;
+  XmbTextExtents( fs , str , strlen(str) , &ink, &logical);
+  width=logical.width ;
+  uhead = logical.y ;
+  height = logical.height ;
 
   strftime(str, MAX_FORM, Form2 , tmm);
-  XmbTextExtents( fs , str , strlen(str) , &ink, &log);  
-  if ( width < log.width )
-    width = log.width ;
-  if ( uhead < log.y )
-    uhead = log.y ;
-  if ( height < log.height )
-    height = log.height ;
+  XmbTextExtents( fs , str , strlen(str) , &ink, &logical);
+  if ( width < logical.width )
+    width = logical.width ;
+  if ( uhead < logical.y )
+    uhead = logical.y ;
+  if ( height < logical.height )
+    height = logical.height ;
 
   xcol.flags = DoRed|DoGreen|DoBlue ;
   for ( i = 0 ; i < 2 ; i ++ ){
@@ -210,6 +210,8 @@ void main( int argc , char **argv ){
       strcpy( str2 , str ) ;
     }
   }
+
+  return 0;
 }
 
 void SetFont( char *localename , Display *dpy , char *fsname )

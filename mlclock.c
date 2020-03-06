@@ -75,7 +75,7 @@ int main( int argc , char **argv ){
   
   wait.tv_usec = 200000 ;
   wait.tv_sec = 0 ;
-  
+
   str[0] = '\0' ;
   i = 1 ;
   while( i < argc ){
@@ -254,7 +254,7 @@ void readrc(){
   
   Mode = Near = Head = NONE ;
   Form1 = Form2 = LocaleName = FSName = NULL ;
-  
+
   for ( i = 0 ; i < 3 ; i ++ ){
     Color[0][i] = 0 ;
     Color[1][i] = 0xffff ;
@@ -294,7 +294,8 @@ void readrc(){
 	string[i] = ' ' ;
 	sw1 = True ;
       }
-      work[i] = string[i++] ;
+      work[i] = string[i] ;
+      i++;
     }
     work[i] = '\0' ;
     

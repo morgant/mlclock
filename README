@@ -5,6 +5,11 @@ HOW TO COMPILE
    1) xmkmf
    2) make
 
+   -or-
+
+   1) C_INCLUDE_PATH="/usr/X11R6/include" LIBRARY_PATH="/usr/X11R6/lib" clang -std=c11 -pedantic -D_DEFAULT_SOURCE mlclock.c -o mlclock -lc -lm -lX11 -lXext
+   2) install -m 755 mlclock /usr/local/bin
+
 HOW TO USE
 
    Copy mlclockrc file to your home directory as ".mlclockrc" or specifyed name.

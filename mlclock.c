@@ -45,9 +45,9 @@ char *RCFile;     /* path of config file */
 int Color[2][3];  /* the color for font and background */
 int Bold = False; /* software bold font */
  
-void SetFont( char *localename , Display *dpy , char *fsname );
+void SetFont( char *localename, Display *dpy, char *fsname );
 void readrc();
-void getRGB( char *color , int *store );
+void getRGB( char *color, int *store );
 void usage( char *name );
 
 Display *dpy;
@@ -60,14 +60,14 @@ Colormap cmap;
 
 struct timeval wait;
 
-int main( int argc , char **argv ){
-  char str[MAX_FORM] , str2[MAX_FORM] , *form = NULL;
-  int screen , sw = False , lsec = 0 , uhead , width , height , i;
+int main( int argc, char **argv ){
+  char str[MAX_FORM], str2[MAX_FORM], *form = NULL;
+  int screen, sw = False, lsec = 0, uhead, width, height, i;
   struct tm *tmm;
   time_t tmt;
 
-  Window root , child;
-  int rootx , rooty , wx , wy;
+  Window root, child;
+  int rootx, rooty, wx, wy;
   unsigned int key;
   XColor xcol;
   XSizeHints hint;
@@ -79,11 +79,11 @@ int main( int argc , char **argv ){
   str[0] = '\0';
   i = 1;
   while( i < argc ){
-    if ( !strcmp( "-display" , argv[i] )){
+    if ( !strcmp( "-display", argv[i] )){
       i++;
       if ( argc >= argc )
 	usage( argv[0]);
-      strcpy( str , argv[i] );
+      strcpy( str, argv[i] );
       break;
     }
     usage(argv[0]);
@@ -92,21 +92,21 @@ int main( int argc , char **argv ){
   dpy = XOpenDisplay(NULL);
 
   if ( dpy == NULL ){
-    fprintf( stderr , "Can't open display.\n" );
+    fprintf( stderr, "Can't open display.\n" );
     exit(0);
   }
   
   screen = DefaultScreen( dpy );
-  gc = DefaultGC( dpy , screen );
-  cmap = DefaultColormap( dpy , screen );
+  gc = DefaultGC( dpy, screen );
+  cmap = DefaultColormap( dpy, screen );
   
   readrc();
   
   if (XSupportsLocale() == False)
     fprintf(stderr,"X does not support the locale\n");
-  SetFont( LocaleName , dpy , FSName );
+  SetFont( LocaleName, dpy, FSName );
 
-  XSetForeground( dpy , gc , BlackPixel( dpy , screen ));
+  XSetForeground( dpy, gc, BlackPixel( dpy, screen ));
   setlocale(LC_TIME, LocaleName );
   
   time( &tmt );
@@ -117,14 +117,14 @@ int main( int argc , char **argv ){
   tmm->tm_mday = 30;
   tmm->tm_yday = 365;
 
-  strftime(str, MAX_FORM, Form1 , tmm);
-  XmbTextExtents( fs , str , strlen(str) , &ink, &logical);
+  strftime(str, MAX_FORM, Form1, tmm);
+  XmbTextExtents( fs, str, strlen(str), &ink, &logical);
   width=logical.width;
   uhead = logical.y;
   height = logical.height;
 
-  strftime(str, MAX_FORM, Form2 , tmm);
-  XmbTextExtents( fs , str , strlen(str) , &ink, &logical);
+  strftime(str, MAX_FORM, Form2, tmm);
+  XmbTextExtents( fs, str, strlen(str), &ink, &logical);
   if ( width < logical.width )
     width = logical.width;
   if ( uhead < logical.y )
@@ -137,37 +137,37 @@ int main( int argc , char **argv ){
     xcol.red =  Color[i][0];
     xcol.green = Color[i][1];
     xcol.blue = Color[i][2];
-    if ( XAllocColor( dpy , cmap , &xcol ))
+    if ( XAllocColor( dpy, cmap, &xcol ))
       iro[i] = xcol.pixel;
     else fprintf(stderr,"Can't allocate Color \n" );
   }
   
-  win = XCreateSimpleWindow( dpy , DefaultRootWindow( dpy ) ,
-			    0 , 0 , width + 3 , height + Head + 2 , 0 , 
-			    iro[0] ,iro[1] ); 
+  win = XCreateSimpleWindow( dpy, DefaultRootWindow( dpy ),
+			    0, 0, width + 3, height + Head + 2, 0, 
+			    iro[0], iro[1] ); 
 
   hint.max_width  = hint.min_width  = width + 3;
   hint.max_height = hint.min_height = height + Head + 2;
   hint.flags = PMinSize | PMaxSize;
-  XSetNormalHints(dpy , win , &hint);
+  XSetNormalHints(dpy, win, &hint);
   
-  XSelectInput( dpy , win , ButtonReleaseMask );
-  XStoreName( dpy , win , "mlclock" );
-  XSetForeground( dpy , gc , iro[0] );
-  XSync( dpy , 0 ); 
-  XMapWindow( dpy ,win );
-  XSync( dpy , 0 ); 
+  XSelectInput( dpy, win, ButtonReleaseMask );
+  XStoreName( dpy, win, "mlclock" );
+  XSetForeground( dpy, gc, iro[0] );
+  XSync( dpy, 0 ); 
+  XMapWindow( dpy, win );
+  XSync( dpy, 0 ); 
   
   str2[0] = '\0';
   form = Form1;
   while(1){
-    select( 0 , (fd_set *)0 , (fd_set *)0 ,  (fd_set *)0 , &wait);
+    select( 0, (fd_set *)0, (fd_set *)0, (fd_set *)0, &wait);
 
     time( &tmt );
     tmm = localtime( &tmt );
 
     if ( Mode == FOCUS ){
-      XQueryPointer( dpy , win , &root , &child , &rootx,&rooty , &wx,&wy,&key);
+      XQueryPointer( dpy, win, &root, &child, &rootx, &rooty, &wx, &wy, &key);
       if (( -Near < wx ) && ( wx < width + Near ) && 
 	  ( -Near < wy ) && ( wy < height + Near + Head ))
 	form = Form2;
@@ -176,7 +176,7 @@ int main( int argc , char **argv ){
     else
       if ( Mode == CLICK ){
 	if( XEventsQueued( dpy, QueuedAfterFlush ) ){
-	  XNextEvent( dpy , &eve );
+	  XNextEvent( dpy, &eve );
 	  if ( eve.type == ButtonRelease ){
 	    if ( !sw ){
 	      sw = True;
@@ -200,21 +200,21 @@ int main( int argc , char **argv ){
 	}
       }
     
-    strftime(str, sizeof(str),form , tmm);
-    if ( strcmp( str , str2 )){
-      XClearWindow( dpy , win );
-      XmbDrawString( dpy , win , fs , gc, 1 , - uhead + Head + 1 , str, strlen(str));
+    strftime(str, sizeof(str), form, tmm);
+    if ( strcmp( str, str2 )){
+      XClearWindow( dpy, win );
+      XmbDrawString( dpy, win, fs, gc, 1, - uhead + Head + 1, str, strlen(str));
       if ( Bold )
-	XmbDrawString( dpy , win , fs , gc, 2 , - uhead + Head + 1 , str, strlen(str));
-      XSync( dpy , 0 );
-      strcpy( str2 , str );
+	XmbDrawString( dpy, win, fs, gc, 2, - uhead + Head + 1, str, strlen(str));
+      XSync( dpy, 0 );
+      strcpy( str2, str );
     }
   }
 
   return 0;
 }
 
-void SetFont( char *localename , Display *dpy , char *fsname )
+void SetFont( char *localename, Display *dpy, char *fsname )
 {
   char **miss, *def;
   int nMiss;
@@ -222,15 +222,15 @@ void SetFont( char *localename , Display *dpy , char *fsname )
   if (setlocale(LC_ALL, localename) == NULL)
     fprintf(stderr,"Can't set the locale\n");
 
-  fs = XCreateFontSet( dpy , fsname , &miss, &nMiss, &def);
+  fs = XCreateFontSet( dpy, fsname, &miss, &nMiss, &def);
   if (fs == NULL)
     fprintf(stderr,"Can't get fontset.\n" );
 }
 
 void readrc(){
-  int i , end , len , sw1 , cn = 0;
-  char string[501] , work[201] , code[100] , data[100] , *ptr;
-  char *fore , *back;
+  int i, end, len, sw1, cn = 0;
+  char string[501], work[201], code[100], data[100], *ptr;
+  char *fore, *back;
   struct _name {
     char name[10];
     int sw;
@@ -239,17 +239,17 @@ void readrc(){
   FILE *file;
   
   struct _name N[] ={
-    { "FORM1" , 1 } ,
-    { "FORM2" , 2 } ,
-    { "NEAR" , 3 } ,
-    { "EVENT" , 4 } ,
-    { "LOCALE" , 5 } ,
-    { "FONTSET" , 6 } ,
-    { "HEAD" , 7 } ,
-    { "FONTCOLOR" , 8 } ,
-    { "BACKCOLOR" , 9 } ,
-    { "BOLD" , 10 } ,
-    { "" , 0 }};
+    { "FORM1", 1 },
+    { "FORM2", 2 },
+    { "NEAR", 3 },
+    { "EVENT", 4 },
+    { "LOCALE", 5 },
+    { "FONTSET", 6 },
+    { "HEAD", 7 },
+    { "FONTCOLOR", 8 },
+    { "BACKCOLOR", 9 },
+    { "BOLD", 10 },
+    { "", 0 }};
 
   
   Mode = Near = Head = NONE;
@@ -261,31 +261,31 @@ void readrc(){
   }
   
   RCFile = malloc ( sizeof( RCFILE ) + strlen( getenv("HOME")) + 3 );
-  sprintf( RCFile , "%s/%s",getenv("HOME"),RCFILE );
+  sprintf( RCFile, "%s/%s",getenv("HOME"),RCFILE );
 
-  if ( ( file = fopen( RCFile , "r" )) == NULL ){
-    fprintf( stderr , "Can't open \"%s\" file.\n" , RCFile );
-    fprintf( stderr , "Now making rc file.\n" , RCFile );
+  if ( ( file = fopen( RCFile, "r" )) == NULL ){
+    fprintf( stderr, "Can't open \"%s\" file.\n", RCFile );
+    fprintf( stderr, "Now making rc file.\n", RCFile );
     
-    if ((file = fopen( RCFile , "a" )) == NULL )
-      fprintf( stderr , "You can't make rc file in your own dirctory.\n" );
+    if ((file = fopen( RCFile, "a" )) == NULL )
+      fprintf( stderr, "You can't make rc file in your own dirctory.\n" );
     else{
-      fprintf( file , "FORM1	= \"(%%a)%%l:%%M:%%S%%p\"\n");
-      fprintf( file , "FORM2	= \"(%%a)%%b-%%d\"\n");
-      fprintf( file , "EVENT	= FOCUS	; FOCUS or CLICK\n");
-      fprintf( file , "NEAR	= 10\n" );
-      fprintf( file , "LOCALE	= \"C\"\n");
-      fprintf( file , "FONTSET	= \"-*-*-medium-r-normal--12-*\"\n");
-      fprintf( file , "HEAD	= 5\n");
-      fprintf( file , "FONTCOLOR = \"blue\"\n" );
-      fprintf( file , "BACKCOLOR = \"white\"\n" );
-      fprintf( file , "BOLD = FALSE  ; TRUE or FALSE\n" );
+      fprintf( file, "FORM1	= \"(%%a)%%l:%%M:%%S%%p\"\n");
+      fprintf( file, "FORM2	= \"(%%a)%%b-%%d\"\n");
+      fprintf( file, "EVENT	= FOCUS	; FOCUS or CLICK\n");
+      fprintf( file, "NEAR	= 10\n" );
+      fprintf( file, "LOCALE	= \"C\"\n");
+      fprintf( file, "FONTSET	= \"-*-*-medium-r-normal--12-*\"\n");
+      fprintf( file, "HEAD	= 5\n");
+      fprintf( file, "FONTCOLOR = \"blue\"\n" );
+      fprintf( file, "BACKCOLOR = \"white\"\n" );
+      fprintf( file, "BOLD = FALSE  ; TRUE or FALSE\n" );
       fclose ( file );
-      fprintf( stderr , "Created %s file.\n" , RCFile );
+      fprintf( stderr, "Created %s file.\n", RCFile );
     }
   }
   else
-  while( fgets( string , 500 , file )){
+  while( fgets( string, 500, file )){
     end = FALSE;
     i = 0;
     sw1 = False;
@@ -305,7 +305,7 @@ void readrc(){
     code[0] = '\0';
     data[0] = '\0';
     
-    sscanf( work , "%s %s", code , data);
+    sscanf( work, "%s %s", code, data);
     if ( code[0] == '\0' ) 
       continue;
 
@@ -315,7 +315,7 @@ void readrc(){
 	cn = 0;
 	break;
       }
-      if ( !strcmp( N[i].name , code )){
+      if ( !strcmp( N[i].name, code )){
 	cn = N[i].sw;
 	break;
       }
@@ -326,24 +326,24 @@ void readrc(){
     case 1:
       len = strlen( data );
       Form1 = malloc( len );
-      strcpy( Form1 , &data[1] );
+      strcpy( Form1, &data[1] );
       Form1[len-2] = '\0';
       break;
     case 2:
       len = strlen( data );
       Form2 = malloc( len );
-      strcpy( Form2 , &data[1] );
+      strcpy( Form2, &data[1] );
       Form2[len-2] = '\0';
       break;
     case 3:
       Near = atoi( data );
       break;
     case 4:
-      if ( !strcmp( data , "FOCUS" )){
+      if ( !strcmp( data, "FOCUS" )){
 	Mode = FOCUS;
 	break;
       }
-      if ( !strcmp( data , "CLICK" )){
+      if ( !strcmp( data, "CLICK" )){
 	Mode = CLICK;
 	break;
       }
@@ -351,13 +351,13 @@ void readrc(){
     case 5:
       len = strlen( data );
       LocaleName = malloc( len );
-      strcpy( LocaleName , &data[1] );
+      strcpy( LocaleName, &data[1] );
       LocaleName[len-2] = '\0';
       break;
     case 6:
       len = strlen( data );
       FSName = malloc( len );
-      strcpy( FSName , &data[1] );
+      strcpy( FSName, &data[1] );
       FSName[len-2] = '\0';
       break;
     case 7:
@@ -366,23 +366,23 @@ void readrc(){
     case 8:
       len = strlen( data );
       fore = malloc( len );
-      strcpy( fore , &data[1] );
+      strcpy( fore, &data[1] );
       fore[len-2] = '\0';
-      getRGB( fore , Color[0] );
+      getRGB( fore, Color[0] );
       break;
     case 9:
       len = strlen( data );
       back = malloc( len );
-      strcpy( back , &data[1] );
+      strcpy( back, &data[1] );
       back[len-2] = '\0';
-      getRGB( back , Color[1] );
+      getRGB( back, Color[1] );
       break;
     case 10:
-      if ( !strcmp( data , "TRUE" )){
+      if ( !strcmp( data, "TRUE" )){
 	Bold = True;
 	break;
       }
-      if ( !strcmp( data , "FALSE" )){
+      if ( !strcmp( data, "FALSE" )){
 	Bold = False;
 	break;
       }
@@ -400,41 +400,41 @@ void readrc(){
     Head = 0;
   if ( Form1 == NULL ){
     Form1 = malloc( strlen( FORM1 ) + 1);
-    strcpy( Form1 , FORM1 );
+    strcpy( Form1, FORM1 );
   }
   if ( Form2 == NULL ){
     Form2 = malloc( strlen( FORM2 ) + 1);
-    strcpy( Form2 , FORM2 );
+    strcpy( Form2, FORM2 );
   }
   if ( FSName == NULL ){
     FSName = malloc( strlen( DEFAULTFONT ) + 1);
-    strcpy( FSName , DEFAULTFONT );
+    strcpy( FSName, DEFAULTFONT );
   }
   if ( LocaleName == NULL ){
     ptr = getenv( "LANG" );
     if ( ptr == NULL )
       ptr = DEFAULTLANG;
     LocaleName = malloc( strlen( ptr ) + 1);
-    strcpy( LocaleName , ptr );
+    strcpy( LocaleName, ptr );
   }
 }
 
-void getRGB( char *color , int *store ){
+void getRGB( char *color, int *store ){
   int i;
   char tmpcolor[3];
-  XColor rgb , hard;
+  XColor rgb, hard;
   
   if ( color[0] == '#' ){
     color ++;
     for ( i = 0; i < 3; i ++ ){
-      strncpy( tmpcolor , color , 2 );
-      sscanf( tmpcolor , "%x" , store );
+      strncpy( tmpcolor, color, 2 );
+      sscanf( tmpcolor, "%x", store );
       (*store) *= 256;
       color += 2;
     }
   }
   else {
-    XLookupColor( dpy , cmap , color , &rgb , &hard );
+    XLookupColor( dpy, cmap, color, &rgb, &hard );
     store[0] = hard.red;
     store[1] = hard.green;
     store[2] = hard.blue;
@@ -442,9 +442,9 @@ void getRGB( char *color , int *store ){
 }
 
 void usage( char *name ){
-  printf("%s: usage\n" , name );
+  printf("%s: usage\n", name );
   printf("  -display      display name\n\n" );
-  printf(" Version %s\n" , VERSION );
+  printf(" Version %s\n", VERSION );
   printf(" Written by Hideki Kimata\n");
   printf(" EMail hideki@hry.info.gifu-u.ac.jp\n" );
   printf(" Access to http://www.hry.info.gifu-u.ac.jp/~hideki/index.html\n" );

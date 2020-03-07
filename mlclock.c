@@ -263,7 +263,7 @@ void readrc() {
 
   if ( (file = fopen(RCFile, "r")) == NULL ) {
     fprintf(stderr, "Can't open \"%s\" file.\n", RCFile);
-    fprintf(stderr, "Now making rc file.\n", RCFile);
+    fprintf(stderr, "Now making rc file '%s'.\n", RCFile);
 
     if ( (file = fopen(RCFile, "a")) == NULL )
       fprintf(stderr, "You can't make rc file in your own dirctory.\n");

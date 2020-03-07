@@ -34,44 +34,44 @@
 #define FORM2 "(%a)%Y.%b.%d"
 #define DEFAULTLANG "C"
 
-int Mode;         /* timing of change form */
-int Near;         /* the distance of activity */
-int Head;         /* space of window head */
-char *Form1;      /* display form of main */
-char *Form2;      /* display form of second */
-char *LocaleName; /* locale name */
-char *FSName;     /* font set name */
-char *RCFile;     /* path of config file */
-int Color[2][3];  /* the color for font and background */
-int Bold = False; /* software bold font */
+int  Mode;         /* timing of change form */
+int  Near;         /* the distance of activity */
+int  Head;         /* space of window head */
+char *Form1;       /* display form of main */
+char *Form2;       /* display form of second */
+char *LocaleName;  /* locale name */
+char *FSName;      /* font set name */
+char *RCFile;      /* path of config file */
+int  Color[2][3];  /* the color for font and background */
+int  Bold = False; /* software bold font */
 
 void SetFont(char *localename, Display *dpy, char *fsname);
 void readrc();
 void getRGB(char *color, int *store);
 void usage(char *name);
 
-Display *dpy;
-Window win;
-XEvent eve;
+Display    *dpy;
+Window     win;
+XEvent     eve;
 XRectangle ink, logical;
-GC gc;
-XFontSet fs;
-Colormap cmap;
+GC         gc;
+XFontSet   fs;
+Colormap   cmap;
 
 struct timeval wait;
 
 int main(int argc, char **argv) {
-  char str[MAX_FORM], str2[MAX_FORM], *form = NULL;
-  int screen, sw = False, lsec = 0, uhead, width, height, i;
+  char   str[MAX_FORM], str2[MAX_FORM], *form = NULL;
+  int    screen, sw = False, lsec = 0, uhead, width, height, i;
   struct tm *tmm;
   time_t tmt;
 
-  Window root, child;
-  int rootx, rooty, wx, wy;
+  Window       root, child;
+  int          rootx, rooty, wx, wy;
   unsigned int key;
-  XColor xcol;
-  XSizeHints hint;
-  int iro[2];
+  XColor       xcol;
+  XSizeHints   hint;
+  int          iro[2];
 
   wait.tv_usec = 200000;
   wait.tv_sec = 0;
@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
 
 void SetFont(char *localename, Display *dpy, char *fsname) {
   char **miss, *def;
-  int nMiss;
+  int  nMiss;
 
   if ( setlocale(LC_ALL, localename) == NULL )
     fprintf(stderr,"Can't set the locale\n");
@@ -226,15 +226,15 @@ void SetFont(char *localename, Display *dpy, char *fsname) {
 }
 
 void readrc() {
-  int i, end, len, sw1, cn = 0;
-  char string[501], work[201], code[100], data[100], *ptr;
-  char *fore, *back;
+  int    i, end, len, sw1, cn = 0;
+  char   string[501], work[201], code[100], data[100], *ptr;
+  char   *fore, *back;
   struct _name {
     char name[10];
     int sw;
   };
 
-  FILE *file;
+  FILE   *file;
 
   struct _name N[] = {
     { "FORM1", 1 },
@@ -418,8 +418,8 @@ void readrc() {
 }
 
 void getRGB(char *color, int *store) {
-  int i;
-  char tmpcolor[3];
+  int    i;
+  char   tmpcolor[3];
   XColor rgb, hard;
 
   if ( color[0] == '#' ) {

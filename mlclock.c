@@ -40,11 +40,11 @@ int Head;         /* space of window head */
 char *Form1;      /* display form of main */
 char *Form2;      /* display form of second */
 char *LocaleName; /* locale name */
-char *FSName;     /* font set name */ 
+char *FSName;     /* font set name */
 char *RCFile;     /* path of config file */
 int Color[2][3];  /* the color for font and background */
 int Bold = False; /* software bold font */
- 
+
 void SetFont(char *localename, Display *dpy, char *fsname);
 void readrc();
 void getRGB(char *color, int *store);
@@ -72,7 +72,7 @@ int main(int argc, char **argv) {
   XColor xcol;
   XSizeHints hint;
   int iro[2];
-  
+
   wait.tv_usec = 200000;
   wait.tv_sec = 0;
 
@@ -88,27 +88,27 @@ int main(int argc, char **argv) {
     }
     usage(argv[0]);
   }
-  
+
   dpy = XOpenDisplay(NULL);
 
   if ( dpy == NULL ) {
     fprintf(stderr, "Can't open display.\n");
     exit(0);
   }
-  
+
   screen = DefaultScreen(dpy);
   gc = DefaultGC(dpy, screen);
   cmap = DefaultColormap(dpy, screen);
-  
+
   readrc();
-  
+
   if ( XSupportsLocale() == False )
     fprintf(stderr,"X does not support the locale\n");
   SetFont(LocaleName, dpy, FSName);
 
   XSetForeground(dpy, gc, BlackPixel(dpy, screen));
   setlocale(LC_TIME, LocaleName);
-  
+
   time(&tmt);
   tmm = localtime(&tmt);
   tmm->tm_sec = 59;
@@ -142,23 +142,23 @@ int main(int argc, char **argv) {
     else
       fprintf(stderr,"Can't allocate Color \n");
   }
-  
+
   win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy),
 			    0, 0, width + 3, height + Head + 2, 0, 
-			    iro[0], iro[1]); 
+			    iro[0], iro[1]);
 
   hint.max_width  = hint.min_width  = width + 3;
   hint.max_height = hint.min_height = height + Head + 2;
   hint.flags = PMinSize | PMaxSize;
   XSetNormalHints(dpy, win, &hint);
-  
+
   XSelectInput(dpy, win, ButtonReleaseMask);
   XStoreName(dpy, win, "mlclock");
   XSetForeground(dpy, gc, iro[0]);
-  XSync(dpy, 0); 
+  XSync(dpy, 0);
   XMapWindow(dpy, win);
-  XSync(dpy, 0); 
-  
+  XSync(dpy, 0);
+
   str2[0] = '\0';
   form = Form1;
   while (1) {
@@ -190,7 +190,7 @@ int main(int argc, char **argv) {
 	    }
 
 	    if ( sw ) {
-	      if ( tmm->tm_sec < lsec ) 
+	      if ( tmm->tm_sec < lsec )
 	        tmm->tm_sec += 60;
 	      if ( tmm->tm_sec > lsec + 2 ) {
 	        sw = False;
@@ -198,7 +198,7 @@ int main(int argc, char **argv) {
 	      }
 	    }
     }
-    
+
     strftime(str, sizeof(str), form, tmm);
     if ( strcmp(str, str2) ) {
       XClearWindow(dpy, win);
@@ -235,7 +235,7 @@ void readrc() {
   };
 
   FILE *file;
-  
+
   struct _name N[] = {
     { "FORM1", 1 },
     { "FORM2", 2 },
@@ -250,7 +250,6 @@ void readrc() {
     { "", 0 }
   };
 
-  
   Mode = Near = Head = NONE;
   Form1 = Form2 = LocaleName = FSName = NULL;
 
@@ -258,14 +257,14 @@ void readrc() {
     Color[0][i] = 0;
     Color[1][i] = 0xffff;
   }
-  
+
   RCFile = malloc(sizeof(RCFILE) + strlen(getenv("HOME")) + 3);
   sprintf(RCFile, "%s/%s", getenv("HOME"), RCFILE);
 
   if ( (file = fopen(RCFile, "r")) == NULL ) {
     fprintf(stderr, "Can't open \"%s\" file.\n", RCFile);
     fprintf(stderr, "Now making rc file.\n", RCFile);
-    
+
     if ( (file = fopen(RCFile, "a")) == NULL )
       fprintf(stderr, "You can't make rc file in your own dirctory.\n");
     else {
@@ -296,15 +295,15 @@ void readrc() {
         i++;
       }
       work[i] = '\0';
-    
+
       if ( sw1 == False )
         continue;
-    
+
       code[0] = '\0';
       data[0] = '\0';
-    
+
       sscanf(work, "%s %s", code, data);
-      if ( code[0] == '\0' ) 
+      if ( code[0] == '\0' )
         continue;
 
       i = 0;
@@ -319,7 +318,7 @@ void readrc() {
         }
         i++;
       }
-    
+
       switch ( cn ) {
         case 1:
           len = strlen(data);
@@ -390,7 +389,7 @@ void readrc() {
       }
     }
   }
-  
+
   if ( Mode == NONE )
     Mode = FOCUS;
   if ( Near == NONE )
@@ -422,7 +421,7 @@ void getRGB(char *color, int *store) {
   int i;
   char tmpcolor[3];
   XColor rgb, hard;
-  
+
   if ( color[0] == '#' ) {
     color++;
     for ( i = 0; i < 3; i++ ) {

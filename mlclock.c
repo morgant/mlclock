@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
     if ( !strcmp("-display", argv[i]) ) {
       i++;
       if ( argc >= argc )
-	usage(argv[0]);
+	      usage(argv[0]);
       strcpy(str, argv[i]);
       break;
     }
@@ -139,7 +139,8 @@ int main(int argc, char **argv) {
     xcol.blue = Color[i][2];
     if ( XAllocColor(dpy, cmap, &xcol) )
       iro[i] = xcol.pixel;
-    else fprintf(stderr,"Can't allocate Color \n");
+    else
+      fprintf(stderr,"Can't allocate Color \n");
   }
   
   win = XCreateSimpleWindow(dpy, DefaultRootWindow(dpy),
@@ -169,43 +170,41 @@ int main(int argc, char **argv) {
     if ( Mode == FOCUS ) {
       XQueryPointer(dpy, win, &root, &child, &rootx, &rooty, &wx, &wy, &key);
       if ( (-Near < wx) && (wx < width + Near) && 
-	  (-Near < wy) && (wy < height + Near + Head) )
-	form = Form2;
-      else
-	form = Form1;    }
-    else
-      if ( Mode == CLICK ) {
-	if ( XEventsQueued(dpy, QueuedAfterFlush) ) {
-	  XNextEvent(dpy, &eve);
-	  if ( eve.type == ButtonRelease ) {
-	    if ( !sw ) {
-	      sw = True;
-	      lsec = tmm->tm_sec;
+	        (-Near < wy) && (wy < height + Near + Head) )
 	      form = Form2;
-	    }
-	    else {
-	      sw = False;
+      else
 	      form = Form1;
+    } else if ( Mode == CLICK ) {
+	    if ( XEventsQueued(dpy, QueuedAfterFlush) ) {
+	      XNextEvent(dpy, &eve);
+	      if ( eve.type == ButtonRelease ) {
+	        if ( !sw ) {
+	          sw = True;
+	          lsec = tmm->tm_sec;
+	          form = Form2;
+	        } else {
+	          sw = False;
+	          form = Form1;
+	        }
+	      }
 	    }
-	  }
-	}
-	
-	if ( sw ) {
-	  if ( tmm->tm_sec < lsec ) 
-	    tmm->tm_sec += 60;
-	  if ( tmm->tm_sec > lsec + 2 ) {
-	    sw = False;
-	    form = Form1;
-	  }
-	}
-      }
+
+	    if ( sw ) {
+	      if ( tmm->tm_sec < lsec ) 
+	        tmm->tm_sec += 60;
+	      if ( tmm->tm_sec > lsec + 2 ) {
+	        sw = False;
+	        form = Form1;
+	      }
+	    }
+    }
     
     strftime(str, sizeof(str), form, tmm);
     if ( strcmp(str, str2) ) {
       XClearWindow(dpy, win);
       XmbDrawString(dpy, win, fs, gc, 1, - uhead + Head + 1, str, strlen(str));
       if ( Bold )
-	XmbDrawString(dpy, win, fs, gc, 2, - uhead + Head + 1, str, strlen(str));
+	      XmbDrawString(dpy, win, fs, gc, 2, - uhead + Head + 1, str, strlen(str));
       XSync(dpy, 0);
       strcpy(str2, str);
     }
@@ -214,8 +213,7 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void SetFont(char *localename, Display *dpy, char *fsname)
-{
+void SetFont(char *localename, Display *dpy, char *fsname) {
   char **miss, *def;
   int nMiss;
 
@@ -238,7 +236,7 @@ void readrc() {
 
   FILE *file;
   
-  struct _name N[] ={
+  struct _name N[] = {
     { "FORM1", 1 },
     { "FORM2", 2 },
     { "NEAR", 3 },
@@ -249,7 +247,8 @@ void readrc() {
     { "FONTCOLOR", 8 },
     { "BACKCOLOR", 9 },
     { "BOLD", 10 },
-    { "", 0 }};
+    { "", 0 }
+  };
 
   
   Mode = Near = Head = NONE;
@@ -269,7 +268,7 @@ void readrc() {
     
     if ( (file = fopen(RCFile, "a")) == NULL )
       fprintf(stderr, "You can't make rc file in your own dirctory.\n");
-    else{
+    else {
       fprintf(file, "FORM1	= \"(%%a)%%l:%%M:%%S%%p\"\n");
       fprintf(file, "FORM2	= \"(%%a)%%b-%%d\"\n");
       fprintf(file, "EVENT	= FOCUS	; FOCUS or CLICK\n");
@@ -283,112 +282,112 @@ void readrc() {
       fclose(file);
       fprintf(stderr, "Created %s file.\n", RCFile);
     }
-  }
-  else
-  while ( fgets(string, 500, file) ) {
-    end = FALSE;
-    i = 0;
-    sw1 = False;
-    while ( string[i] != ';' && string[i] != '\0' && string[i] != '\n' ) {
-      if ( string[i] == '=' && sw1 == False ) {
-	string[i] = ' ';
-	sw1 = True;
+  } else {
+    while ( fgets(string, 500, file) ) {
+      end = FALSE;
+      i = 0;
+      sw1 = False;
+      while ( string[i] != ';' && string[i] != '\0' && string[i] != '\n' ) {
+        if ( string[i] == '=' && sw1 == False ) {
+	        string[i] = ' ';
+	        sw1 = True;
+        }
+        work[i] = string[i];
+        i++;
       }
-      work[i] = string[i];
-      i++;
-    }
-    work[i] = '\0';
+      work[i] = '\0';
     
-    if ( sw1 == False )
-      continue;
+      if ( sw1 == False )
+        continue;
     
-    code[0] = '\0';
-    data[0] = '\0';
+      code[0] = '\0';
+      data[0] = '\0';
     
-    sscanf(work, "%s %s", code, data);
-    if ( code[0] == '\0' ) 
-      continue;
+      sscanf(work, "%s %s", code, data);
+      if ( code[0] == '\0' ) 
+        continue;
 
-    i = 0;
-    while ( True ) {
-      if ( N[i].name[0] == '\0' ) {
-	cn = 0;
-	break;
+      i = 0;
+      while ( True ) {
+        if ( N[i].name[0] == '\0' ) {
+	        cn = 0;
+	        break;
+        }
+        if ( !strcmp(N[i].name, code) ) {
+	        cn = N[i].sw;
+	        break;
+        }
+        i++;
       }
-      if ( !strcmp(N[i].name, code) ) {
-	cn = N[i].sw;
-	break;
-      }
-      i++;
-    }
     
-    switch ( cn ) {
-    case 1:
-      len = strlen(data);
-      Form1 = malloc(len);
-      strcpy(Form1, &data[1]);
-      Form1[len-2] = '\0';
-      break;
-    case 2:
-      len = strlen(data);
-      Form2 = malloc(len);
-      strcpy(Form2, &data[1]);
-      Form2[len-2] = '\0';
-      break;
-    case 3:
-      Near = atoi(data);
-      break;
-    case 4:
-      if ( !strcmp(data, "FOCUS") ) {
-	Mode = FOCUS;
-	break;
+      switch ( cn ) {
+        case 1:
+          len = strlen(data);
+          Form1 = malloc(len);
+          strcpy(Form1, &data[1]);
+          Form1[len-2] = '\0';
+          break;
+        case 2:
+          len = strlen(data);
+          Form2 = malloc(len);
+          strcpy(Form2, &data[1]);
+          Form2[len-2] = '\0';
+          break;
+        case 3:
+          Near = atoi(data);
+          break;
+        case 4:
+          if ( !strcmp(data, "FOCUS") ) {
+	          Mode = FOCUS;
+	          break;
+          }
+          if ( !strcmp(data, "CLICK") ) {
+	          Mode = CLICK;
+	          break;
+          }
+          break;
+        case 5:
+          len = strlen(data);
+          LocaleName = malloc(len);
+          strcpy(LocaleName, &data[1]);
+          LocaleName[len-2] = '\0';
+          break;
+        case 6:
+          len = strlen(data);
+          FSName = malloc(len);
+          strcpy(FSName, &data[1]);
+          FSName[len-2] = '\0';
+          break;
+        case 7:
+          Head = atoi(data);
+          break;
+        case 8:
+          len = strlen(data);
+          fore = malloc(len);
+          strcpy(fore, &data[1]);
+          fore[len-2] = '\0';
+          getRGB(fore, Color[0]);
+          break;
+        case 9:
+          len = strlen(data);
+          back = malloc(len);
+          strcpy(back, &data[1]);
+          back[len-2] = '\0';
+          getRGB(back, Color[1]);
+          break;
+        case 10:
+          if ( !strcmp(data, "TRUE") ) {
+	          Bold = True;
+	          break;
+          }
+          if ( !strcmp(data, "FALSE") ) {
+	          Bold = False;
+	          break;
+          }
+          break;
+        default:
+          break;
       }
-      if ( !strcmp(data, "CLICK") ) {
-	Mode = CLICK;
-	break;
-      }
-      break;
-    case 5:
-      len = strlen(data);
-      LocaleName = malloc(len);
-      strcpy(LocaleName, &data[1]);
-      LocaleName[len-2] = '\0';
-      break;
-    case 6:
-      len = strlen(data);
-      FSName = malloc(len);
-      strcpy(FSName, &data[1]);
-      FSName[len-2] = '\0';
-      break;
-    case 7:
-      Head = atoi(data);
-      break;
-    case 8:
-      len = strlen(data);
-      fore = malloc(len);
-      strcpy(fore, &data[1]);
-      fore[len-2] = '\0';
-      getRGB(fore, Color[0]);
-      break;
-    case 9:
-      len = strlen(data);
-      back = malloc(len);
-      strcpy(back, &data[1]);
-      back[len-2] = '\0';
-      getRGB(back, Color[1]);
-      break;
-    case 10:
-      if ( !strcmp(data, "TRUE") ) {
-	Bold = True;
-	break;
-      }
-      if ( !strcmp(data, "FALSE") ) {
-	Bold = False;
-	break;
-      }
-      break;
-    default:
-      break;
     }
   }
   

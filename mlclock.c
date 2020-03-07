@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
     height = logical.height;
 
   xcol.flags = DoRed|DoGreen|DoBlue;
-  for ( i = 0; i < 2; i ++ ) {
+  for ( i = 0; i < 2; i++ ) {
     xcol.red =  Color[i][0];
     xcol.green = Color[i][1];
     xcol.blue = Color[i][2];
@@ -255,7 +255,7 @@ void readrc() {
   Mode = Near = Head = NONE;
   Form1 = Form2 = LocaleName = FSName = NULL;
 
-  for ( i = 0; i < 3; i ++ ) {
+  for ( i = 0; i < 3; i++ ) {
     Color[0][i] = 0;
     Color[1][i] = 0xffff;
   }
@@ -319,7 +319,7 @@ void readrc() {
 	cn = N[i].sw;
 	break;
       }
-      i ++;
+      i++;
     }
     
     switch ( cn ) {
@@ -425,8 +425,8 @@ void getRGB(char *color, int *store) {
   XColor rgb, hard;
   
   if ( color[0] == '#' ) {
-    color ++;
-    for ( i = 0; i < 3; i ++ ) {
+    color++;
+    for ( i = 0; i < 3; i++ ) {
       strncpy(tmpcolor, color, 2);
       sscanf(tmpcolor, "%x", store);
       (*store) *= 256;

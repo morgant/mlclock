@@ -1,5 +1,6 @@
 Makefile
 Makefile.bak
 mlclock
-mlckock.o
-mlckock_man
+mlclock.o
+mlclock.man
+mlclock_man

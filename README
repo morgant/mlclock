@@ -4,6 +4,7 @@ HOW TO COMPILE
 
    1) xmkmf
    2) make
+   3) make install
 
    -or-
 
@@ -17,4 +18,8 @@ HOW TO USE
 
 ABOUT BUGS
 
-   Send mail to hideki@hry.info.gifu-u.ac.jp
+   Open a issue at https://github.com/morgant/mlclock/issues
+
+ORIGINAL AUTHOR: 
+
+   hideki@hry.info.gifu-u.ac.jp

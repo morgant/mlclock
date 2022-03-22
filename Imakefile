@@ -7,7 +7,9 @@ OPTION =
 # If function dosen't find , add  -lsocket or whatever you need .
 # This is example .
 #ADD_LIBRARIES = -lxpg4 -lsocket -lnsl
-ADD_LIBRARIES = -lxpg4
+ifeq ($(uname -s), Solaris)
+	ADD_LIBRARIES = -lxpg4
+endif
 
 #---You shouldn't have to change anything below this line.---
 
@@ -18,4 +20,4 @@ OBJS = $(SRCS:.c=.o)
 
 DEFINES = $(OPTION) -DRCFILE=\"${RCFILE}\"
 
-ComplexProgramTarget( mlclock )
+ComplexProgramTarget(mlclock)
